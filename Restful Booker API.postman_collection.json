@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d9293684-158d-4ca4-a86b-627a17d532cf",
+		"_postman_id": "5d13623a-26fd-4e68-b1f5-24ac86ced66f",
 		"name": "Restful Booker API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22449893"
+		"_exporter_id": "20058696"
 	},
 	"item": [
 		{
@@ -16,6 +16,20 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 300ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript"
@@ -23,6 +37,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "basic"
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -32,7 +49,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+							"raw": "{\n    \"username\" : \"{{adminName}}\",\n    \"password\" : \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
 							"raw": "{{rb_url}}/auth",
@@ -137,6 +159,16 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test(\"total price check\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.booking.totalprice).to.eql(100);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"firstname is Ginny\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.booking.firstname).to.include(\"Ginny\");\r",
+									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -153,7 +185,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{totalprice}},\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\" : \"{{additionalneeds}}\"\n}"
+							"raw": "{\n    \"firstname\" : \"Ginny\",\n    \"lastname\" : \"Xu\",\n    \"totalprice\" : 139,\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\" : \"{{additionalneeds}}\"\n}"
 						},
 						"url": {
 							"raw": "{{rb_url}}/booking",
@@ -243,13 +275,13 @@
 							"raw": "{\n    \"firstname\" : \"{{firstname}}\",\n    \"lastname\" : \"{{lastname}}\",\n    \"totalprice\" : {{totalprice}},\n    \"depositpaid\" : {{depositpaid}},\n    \"bookingdates\" : {\n        \"checkin\" : \"{{checkin}}\",\n        \"checkout\" : \"{{checkout}}\"\n    },\n    \"additionalneeds\" : \"{{additionalneeds}}\"\n}"
 						},
 						"url": {
-							"raw": "{{rb_url}}/booking/{{booking_id}}",
+							"raw": "{{rb_url}}/booking/7131",
 							"host": [
 								"{{rb_url}}"
 							],
 							"path": [
 								"booking",
-								"{{booking_id}}"
+								"7131"
 							]
 						}
 					},
